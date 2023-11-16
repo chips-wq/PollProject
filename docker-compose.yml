@@ -6,7 +6,18 @@ services:
       - "8080:8080"
     volumes:
       - ./backend:/usr/src/backend
+  frontend:
+    build: ./pollfrontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./pollfrontend:/usr/src/app
   mongo:
     image: "mongo:latest"
     ports:
       - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:

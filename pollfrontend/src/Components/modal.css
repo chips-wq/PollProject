@@ -1,0 +1,35 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent black background */
+}
+
+.modal-content {
+    min-width: 200px;
+    min-height: 200px;
+    background-color: var(--primary-color);
+    border-radius: 1em;
+    padding: 1em;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    cursor: auto;
+}
+
+
+.modal-close {
+    border: none;
+    background-color: var(--primary-color);
+    width: fit-content;
+    align-self: end;
+}
+
+.modal-close>img {
+    width: 20px;
+}
