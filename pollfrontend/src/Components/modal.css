@@ -8,6 +8,7 @@
     place-items: center;
     background: rgba(0, 0, 0, 0.5);
     /* Semi-transparent black background */
+    cursor: auto;
 }
 
 .modal-content {
@@ -19,7 +20,6 @@
     color: white;
     display: flex;
     flex-direction: column;
-    cursor: auto;
 }
 
 
@@ -28,6 +28,7 @@
     background-color: var(--primary-color);
     width: fit-content;
     align-self: end;
+    cursor: pointer;
 }
 
 .modal-close>img {
