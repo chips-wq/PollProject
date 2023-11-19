@@ -1,0 +1,7 @@
+
+module.exports = {
+    DUPLICATE_ERR: 409,
+    VALIDATION_ERR: 400,
+    AUTH_ERR: 403,
+    INTERNAL_SERVER_ERR: 500,
+}
