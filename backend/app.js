@@ -16,7 +16,7 @@ const pollRouter = require("./polls.js");
 
 const errorCodes = require("./constants.js");
 
-app.use(cors())
+app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser());
@@ -34,7 +34,13 @@ app.post("/login", async (req, res) => {
         //TODO: encrypt passwords and test hashes please
         if (usr.password === req.body.password) {
             const token = jwt.sign({ _id: usr._id, }, process.env.SECRET_JWT)
-            res.cookie('token', token, { httpOnly: true });
+            res.cookie('token', token, {
+                httpOnly: true,
+                // secure = only send cookie over https
+                secure: true,
+                // sameSite = only send cookie if the request is coming from the same origin
+                sameSite: "none", // "strict" | "lax" | "none" (secure must be true)
+            });
             res.status(200).send(usr);
             return;
         }
@@ -50,7 +56,13 @@ app.post("/register", async (req, res) => {
     try {
         const usr = await myUser.save();
         const token = jwt.sign({ _id: usr._id, }, process.env.SECRET_JWT)
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, {
+            httpOnly: true,
+            // secure = only send cookie over https
+            secure: true,
+            // sameSite = only send cookie if the request is coming from the same origin
+            sameSite: "none", // "strict" | "lax" | "none" (secure must be true)
+        });
         res.status(200).send(usr);
     } catch (e) {
         if (e.code === 11000) { //mongodb 11000 is duplicate key error
@@ -64,7 +76,7 @@ app.post("/register", async (req, res) => {
 })
 
 app.post('/logout', (req, res) => {
-    res.cookie("token", "", { expires: new Date(0), httpOnly: true });
+    res.cookie("token", "", { expires: new Date(0), httpOnly: true, secure: true, sameSite: 'none' });
     res.status(200).send({ message: "Succesfully logged out" });
 })
 

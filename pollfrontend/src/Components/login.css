@@ -1,0 +1,42 @@
+input {
+    background-color: inherit;
+    border: 2px solid white;
+    border-radius: 1em;
+    padding: 1em;
+    color: white;
+    outline: none;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0em 5em;
+    align-items: center;
+}
+
+.login-container>h1 {
+    padding-bottom: 2em;
+}
+
+.login-container>form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+    padding-bottom: 3em;
+}
+
+.form-button {
+    background-color: white;
+    border: none;
+    color: var(--primary-color);
+    outline: none;
+    padding: 1em 3em;
+    border-radius: 5px;
+}
+
+
+h1 {
+    margin: 0;
+}

@@ -12,8 +12,6 @@
 }
 
 .modal-content {
-    min-width: 200px;
-    min-height: 200px;
     background-color: var(--primary-color);
     border-radius: 1em;
     padding: 1em;

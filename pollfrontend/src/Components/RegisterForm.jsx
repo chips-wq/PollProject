@@ -1,16 +1,14 @@
 
 
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import apiBase from "../utils/constants";
 import "./login.css"
-import UserContext from '../context/context';
 
-const LoginForm = ({ closeModal }) => {
-    const [user, setUser] = useContext(UserContext);
-
+const RegisterForm = ({ closeModal }) => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
+        confirmPassword: '',
     });
 
     const handleInputChange = (event) => {
@@ -26,15 +24,14 @@ const LoginForm = ({ closeModal }) => {
         // Perform login logic here
         console.log('Form data', JSON.stringify(formData));
         try {
-            const rawResponse = await fetch(`${apiBase}/login`, {
+            const rawResponse = await fetch(`${apiBase}/register`, {
                 method: 'POST',
                 credentials: "include",
                 headers: { "Access-Control-Allow-Credentials": "true", "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
             });
             const jsonResponse = await rawResponse.json();
-            setUser(jsonResponse);
-            closeModal();
+            console.log(jsonResponse);
         } catch (e) {
             console.error("Error sending login request");
         }
@@ -42,7 +39,7 @@ const LoginForm = ({ closeModal }) => {
 
     return (
         <div className='login-container'>
-            <h1>Login</h1>
+            <h1>Register</h1>
             <form onSubmit={handleSubmit}>
                 <div>
                     <input
@@ -64,10 +61,20 @@ const LoginForm = ({ closeModal }) => {
                         onChange={handleInputChange}
                     />
                 </div>
-                <button type="submit" className='form-button'>Login</button>
+                <div>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm password"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                    />
+                </div>
+                <button type="submit" className='form-button'>Register</button>
             </form>
         </div>
     );
 };
 
-export default LoginForm;
+export default RegisterForm;
