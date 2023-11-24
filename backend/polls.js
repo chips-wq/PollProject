@@ -8,7 +8,7 @@ const verifyJwtToken = require("./db/login/util").verifyJwtToken;
 router.get("/", async (req, res) => {
     try {
         const polls = await Poll.find();
-        res.status(200).send({ polls: polls });
+        res.status(200).send(polls);
     } catch (e) {
         res.status(INTERNAL_SERVER_ERR).send("Internal Server Error");
     }

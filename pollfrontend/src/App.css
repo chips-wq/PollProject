@@ -32,3 +32,46 @@
     flex-direction: column;
     gap: 1.2em;
 }
+
+.main-content {
+    padding-top: 5em;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.main-content-header {
+    display: flex;
+    font-size: 0.8em;
+}
+
+.polls-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.poll-container {
+    background-color: white;
+    color: black;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    padding: 1.2em;
+}
+
+.poll-container>button {
+    align-self: center;
+}
+
+.poll-container>h4 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+.poll-container>p {
+    margin: 0;
+    font-size: 0.8em;
+    color: grey;
+    font-weight: light;
+}
