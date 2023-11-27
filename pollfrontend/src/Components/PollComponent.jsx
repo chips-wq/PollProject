@@ -1,13 +1,46 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import UserContext from "../context/context";
+import apiBase from "../utils/constants";
 
-const PollComponent = ({ question, answers }) => {
+const PollComponent = ({ pollId, question, answers, ownerId, votes, setPolls }) => {
 
-    const [selectedVote, setSelectedVote] = useState(null);
+
     const [user, setUser] = useContext(UserContext);
 
-    const handleSubmit = e => {
+    const [selectedVote, setSelectedVote] = useState(null);
+
+    useEffect(() => {
+        if (user === null)
+            return
+        const votedArr = votes.filter(vote => vote.voterId === user._id);
+        if (votedArr.length > 0) {
+            setSelectedVote(votedArr[0].voteIndex);
+        }
+    }, []);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("into submit");
+        console.log(selectedVote);
+        const rawResponse = await fetch(`${apiBase}/polls/vote`, {
+            method: 'POST',
+            credentials: "include",
+            headers: { "Access-Control-Allow-Credentials": "true", "Content-Type": "application/json" },
+            body: JSON.stringify(
+                { pollId: pollId, voteIndex: selectedVote }
+            )
+        });
+        const updatedPollJson = await rawResponse.json()
+        console.log(updatedPollJson)
+        if (rawResponse.status == 200) {
+            setPolls(prevPolls => {
+                const index = prevPolls.findIndex(poll => poll._id === pollId);
+                const newPolls = [...prevPolls];
+                newPolls[index] = updatedPollJson;
+                console.log(newPolls);
+                return newPolls;
+            })
+        }
         console.log("submitted");
     }
 
@@ -16,19 +49,31 @@ const PollComponent = ({ question, answers }) => {
         console.log(user);
     }
     //TODO: add functionality to this poll component and voting capacity
+
+    const isDisabled = () => {
+        if (user === null) {
+            return true;
+        }
+        const votedArr = votes.filter(vote => vote.voterId === user._id);
+        return votedArr.length > 0;
+    }
+
     return <form className="poll-container" onSubmit={handleSubmit}>
         <h4>{question}</h4>
         <p>Make a choice:</p>
         {answers.map((answer, id) =>
             <div key={id}>
-                <input type="radio" value={id} checked={selectedVote == id} onChange={handleCheck} />
+                <input type="radio" value={id} checked={selectedVote == id} onChange={handleCheck} disabled={isDisabled()} />
                 <label>{answer}</label>
             </div>)}
-        <div className="button-container">
-            <button type="submit">Vote</button>
-            <button>Delete</button>
-        </div>
-    </form>
+        {user !== null ?
+            <div className="button-container">
+                <button type="submit" disabled={isDisabled() || selectedVote === null}>Vote</button>
+                {ownerId === user._id &&
+                    <button type="button">Delete</button>}
+            </div>
+            : null}
+    </form >
 }
 
 export default PollComponent;

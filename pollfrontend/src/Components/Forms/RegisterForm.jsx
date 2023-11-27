@@ -1,10 +1,13 @@
 
 
-import React, { useState } from 'react';
-import apiBase from "../utils/constants";
+import React, { useContext, useState } from 'react';
+import apiBase from "../../utils/constants";
 import "./login.css"
+import UserContext from '../../context/context';
 
 const RegisterForm = ({ closeModal }) => {
+
+    const [user, setUser] = useContext(UserContext)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -31,14 +34,17 @@ const RegisterForm = ({ closeModal }) => {
                 body: JSON.stringify(formData)
             });
             const jsonResponse = await rawResponse.json();
-            console.log(jsonResponse);
+            if (rawResponse.status === 200) {
+                setUser(jsonResponse);
+                closeModal();
+            }
         } catch (e) {
             console.error("Error sending login request");
         }
     };
 
     return (
-        <div className='login-container'>
+        <div className='form-container'>
             <h1>Register</h1>
             <form onSubmit={handleSubmit}>
                 <div>

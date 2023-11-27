@@ -15,6 +15,7 @@ const pollRouter = require("./polls.js");
 
 
 const errorCodes = require("./constants.js");
+const { verifyJwtToken } = require('./db/login/util.js');
 
 app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }))
 app.use(express.urlencoded({ extended: true }))
@@ -38,6 +39,7 @@ app.post("/login", async (req, res) => {
                 httpOnly: true,
                 // secure = only send cookie over https
                 secure: true,
+                maxAge: 7200000,
                 // sameSite = only send cookie if the request is coming from the same origin
                 sameSite: "none", // "strict" | "lax" | "none" (secure must be true)
             });
@@ -59,6 +61,7 @@ app.post("/register", async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             // secure = only send cookie over https
+            maxAge: 7200000,
             secure: true,
             // sameSite = only send cookie if the request is coming from the same origin
             sameSite: "none", // "strict" | "lax" | "none" (secure must be true)
@@ -74,6 +77,11 @@ app.post("/register", async (req, res) => {
         }
     }
 })
+
+app.post('/get-user', verifyJwtToken, async (req, res) => {
+    const user = await User.findById(req.userId).exec();
+    res.status(200).send(user);
+});
 
 app.post('/logout', (req, res) => {
     res.cookie("token", "", { expires: new Date(0), httpOnly: true, secure: true, sameSite: 'none' });

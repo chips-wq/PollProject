@@ -1,9 +1,9 @@
 
 
 import React, { useContext, useState } from 'react';
-import apiBase from "../utils/constants";
+import apiBase from "../../utils/constants";
 import "./login.css"
-import UserContext from '../context/context';
+import UserContext from '../../context/context';
 
 const LoginForm = ({ closeModal }) => {
     const [user, setUser] = useContext(UserContext);
@@ -33,15 +33,19 @@ const LoginForm = ({ closeModal }) => {
                 body: JSON.stringify(formData)
             });
             const jsonResponse = await rawResponse.json();
-            setUser(jsonResponse);
-            closeModal();
+            if (rawResponse.status === 200) {
+                setUser(jsonResponse);
+                closeModal();
+            } else {
+                //TODO: set errors
+            }
         } catch (e) {
             console.error("Error sending login request");
         }
     };
 
     return (
-        <div className='login-container'>
+        <div className='form-container'>
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <div>

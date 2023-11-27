@@ -9,6 +9,7 @@
     background: rgba(0, 0, 0, 0.5);
     /* Semi-transparent black background */
     cursor: auto;
+    overflow-y: auto;
 }
 
 .modal-content {

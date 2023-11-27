@@ -2,6 +2,7 @@ const router = require('express').Router()
 const User = require("./db/models/User");
 const Poll = require("./db/models/Poll");
 const { INTERNAL_SERVER_ERR, DUPLICATE_ERR, VALIDATION_ERR } = require('./constants');
+const isNumeric = require("./util");
 
 const verifyJwtToken = require("./db/login/util").verifyJwtToken;
 
@@ -34,11 +35,12 @@ router.post("/vote", verifyJwtToken, async (req, res) => {
         return vote.voterId.valueOf() === req.userId
     }
     );
-    if (voted.length > 0) {
-        res.status(DUPLICATE_ERR).send({ errorCode: DUPLICATE_ERR, errors: ['Ai votat deja!'] });
-        return;
-    }
-    if (typeof req.body.voteIndex !== Number || req.body.voteIndex >= poll.answers.length) {
+    // if (voted.length > 0) {
+    //     res.status(DUPLICATE_ERR).send({ errorCode: DUPLICATE_ERR, errors: ['Ai votat deja!'] });
+    //     return;
+    // }
+    console.log(typeof req.body.voteIndex);
+    if (!isNumeric(req.body.voteIndex) || req.body.voteIndex >= poll.answers.length) {
         res.status(VALIDATION_ERR).send({ errorCode: VALIDATION_ERR, errors: ['Nu exista acest raspuns !'] });
         return;
     }

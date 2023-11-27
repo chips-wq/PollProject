@@ -22,9 +22,24 @@ function App() {
         setPolls(jsonResponse);
     }
 
+    const getUser = async () => {
+        const rawResponse = await fetch(`${apiBase}/get-user`, {
+            method: 'POST',
+            credentials: "include",
+            headers: { "Access-Control-Allow-Credentials": "true", "Content-Type": "application/json" },
+        });
+        const jsonResponse = await rawResponse.json();
+        if (rawResponse.status === 200) {
+            setUser(jsonResponse);
+        }
+    }
+
     useEffect(() => {
         getPolls();
+        getUser();
     }, []);
+
+
     return (
         <>
             <UserContext.Provider value={[user, setUser]}>
@@ -37,7 +52,7 @@ function App() {
                     <div className='polls-container'>
                         {polls.length > 0 ?
                             polls.map(poll => (
-                                <PollComponent key={poll._id} question={poll.question} answers={poll.answers} />
+                                <PollComponent key={poll._id + (user ? user._id : 1)} pollId={poll._id} question={poll.question} answers={poll.answers} ownerId={poll.ownerId} votes={poll.votes} setPolls={setPolls} />
                             )) : null}
                     </div>
                 </div>
