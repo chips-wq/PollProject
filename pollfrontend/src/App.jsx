@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import testoasaSvg from './assets/testoasa.svg'
 import PollComponent from './Components/PollComponent';
 import apiBase from './utils/constants';
+import PollContext from './context/PollContext';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -43,19 +44,20 @@ function App() {
     return (
         <>
             <UserContext.Provider value={[user, setUser]}>
-                <Navbar></Navbar>
-                <div className='main-content'>
-                    <div className='main-content-header'>
-                        <p>Opiniile sunt mai importante ca niciodată. Platformele de sondaje permit organizatorilor să culeagă feedback direct de la audiența lor și să înțeleagă mai bine nevoile și dorințele acesteia.</p>
-                        <img src={testoasaSvg} style={{ width: '160px' }} />
-                    </div>
-                    <div className='polls-container'>
-                        {polls.length > 0 ?
-                            polls.map(poll => (
-                                <PollComponent key={poll._id + (user ? user._id : 1)} pollId={poll._id} question={poll.question} answers={poll.answers} ownerId={poll.ownerId} votes={poll.votes} setPolls={setPolls} />
-                            )) : null}
-                    </div>
-                </div>
+                <PollContext.Provider value={[polls, setPolls]}>
+                    <Navbar></Navbar>
+                    <div className='main-content'>
+                        <div className='main-content-header'>
+                            <p>Opiniile sunt mai importante ca niciodată. Platformele de sondaje permit organizatorilor să culeagă feedback direct de la audiența lor și să înțeleagă mai bine nevoile și dorințele acesteia.</p>
+                            <img src={testoasaSvg} style={{ width: '160px' }} />
+                        </div>
+                        <div className='polls-container'>
+                            {polls.length > 0 ?
+                                polls.map(poll => (
+                                    <PollComponent key={poll._id + (user ? user._id : 1)} pollId={poll._id} question={poll.question} answers={poll.answers} ownerId={poll.ownerId} votes={poll.votes} setPolls={setPolls} />
+                                )) : null}
+                        </div>
+                    </div></PollContext.Provider>
             </UserContext.Provider>
         </>
     )

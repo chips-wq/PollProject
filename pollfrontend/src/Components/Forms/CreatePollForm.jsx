@@ -1,8 +1,11 @@
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import apiBase from "../../utils/constants";
-const CreatePollForm = () => {
+import PollContext from "../../context/PollContext";
+
+const CreatePollForm = ({ closeModal }) => {
     const [numOptions, setNumOptions] = useState(3);
+    const [polls, setPolls] = useContext(PollContext);
 
     const handleSubmit = async (e) => {
         const formData = new FormData(e.target);
@@ -14,9 +17,6 @@ const CreatePollForm = () => {
         for (let pair of formDataIterator) {
             answers.push(pair[1]);
         }
-        console.log(question, answers);
-
-        //http://localhost:8080/polls
         try {
             const rawResponse = await fetch(`${apiBase}/polls`, {
                 method: 'POST',
@@ -29,17 +29,19 @@ const CreatePollForm = () => {
             const jsonResponse = await rawResponse.json();
             if (rawResponse.status === 200) {
                 //add the poll to the current list of polls
+                setPolls(oldPolls => {
+                    return [...oldPolls, jsonResponse]
+                });
+                closeModal();
             }
         } catch (e) {
             console.error(e);
-            console.error("Error sending create poll request");
         }
     }
     const inputs = []
     for (let i = 0; i < numOptions; i++) {
-        inputs.push(<>
+        inputs.push(<div key={i}>
             <input
-                key={i}
                 required={true}
                 style={{ marginBottom: "1em" }}
                 type="text"
@@ -48,7 +50,7 @@ const CreatePollForm = () => {
                 placeholder={`Option ${i}`}
             />
             <br />
-        </>)
+        </div>)
     }
 
     return <div className='form-container'>
@@ -62,8 +64,6 @@ const CreatePollForm = () => {
                     id="question"
                     name="question"
                     placeholder="Type your question here"
-                // value={formData.question}
-                // onChange={handleQuestionChange}
                 />
             </div>
             <div >
