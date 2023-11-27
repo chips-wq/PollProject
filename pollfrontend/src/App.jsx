@@ -37,7 +37,7 @@ function App() {
                     <div className='polls-container'>
                         {polls.length > 0 ?
                             polls.map(poll => (
-                                <PollComponent question={poll.question} answers={poll.answers} />
+                                <PollComponent key={poll._id} question={poll.question} answers={poll.answers} />
                             )) : null}
                     </div>
                 </div>

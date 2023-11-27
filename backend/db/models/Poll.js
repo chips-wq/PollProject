@@ -4,8 +4,16 @@ const Schema = mongoose.Schema;
 const pollSchema = new Schema({
     question: { type: String, require: true },
     answers: { type: [String], require: true },
-    _ownerId: { type: Schema.Types.ObjectId, require: true },
-    _votersIds: [Schema.Types.ObjectId]
+    _ownerId: { type: Schema.Types.ObjectId, ref: 'User', require: true },
+    votes: {
+        type: [
+            {
+                voterId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Assuming you have a User model
+                voteIndex: Number
+            }
+        ],
+        default: []
+    }
 });
 
 const Poll = new mongoose.model('Poll', pollSchema);

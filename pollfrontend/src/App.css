@@ -59,8 +59,9 @@
     padding: 1.2em;
 }
 
-.poll-container>button {
-    align-self: center;
+.button-container {
+    display: flex;
+    align-self: flex-end;
 }
 
 .poll-container>h4 {
