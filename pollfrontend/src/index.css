@@ -4,13 +4,15 @@
     font-weight: 500;
 
     --primary-color: #04395E;
+    --secondary-color: #FF1F66;
 }
 
 body {
     margin: 0;
     background-image: url('/poll_bg_big.png');
     background-size: cover;
-    min-height: 100vh;
+    /* min-height: 100vh; */
     background-repeat: no-repeat;
     color: white;
+    background-position: 0px -30px;
 }

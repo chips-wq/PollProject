@@ -6,6 +6,9 @@ import testoasaSvg from './assets/testoasa.svg'
 import PollComponent from './Components/PollComponent';
 import apiBase from './utils/constants';
 import PollContext from './context/PollContext';
+import facebookSvg from './assets/facebook.svg'
+import instagramSvg from './assets/instagram.svg'
+import twitchSvg from './assets/twitch.svg'
 
 function App() {
     const [user, setUser] = useState(null);
@@ -49,7 +52,7 @@ function App() {
                     <div className='main-content'>
                         <div className='main-content-header'>
                             <p>Opiniile sunt mai importante ca niciodată. Platformele de sondaje permit organizatorilor să culeagă feedback direct de la audiența lor și să înțeleagă mai bine nevoile și dorințele acesteia.</p>
-                            <img src={testoasaSvg} style={{ width: '160px' }} />
+                            <img id="testoasa" src={testoasaSvg} />
                         </div>
                         <div className='polls-container'>
                             {polls.length > 0 ?
@@ -57,7 +60,21 @@ function App() {
                                     <PollComponent key={poll._id + (user ? user._id : 1)} pollId={poll._id} question={poll.question} answers={poll.answers} ownerId={poll.ownerId} votes={poll.votes} setPolls={setPolls} />
                                 )) : null}
                         </div>
-                    </div></PollContext.Provider>
+                    </div>
+                    <footer>
+                        <div style={{ width: '80px' }}></div>
+                        <a href="https://www.instagram.com/lsacbucuresti/" target="_blank">
+                            <img src={instagramSvg} />
+                        </a>
+                        <a href="https://www.facebook.com/LsacBucuresti/" target="_blank">
+                            <img src={facebookSvg} />
+                        </a>
+                        <a href="https://www.twitch.tv/lsac_bucuresti" target="_blank">
+                            <img src={twitchSvg} />
+                        </a>
+                        <div style={{ width: '80px' }}></div>
+                    </footer>
+                </PollContext.Provider>
             </UserContext.Provider>
         </>
     )
