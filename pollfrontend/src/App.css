@@ -101,7 +101,8 @@ footer {
     display: flex;
     justify-content: space-around;
     background-color: var(--secondary-color);
-    padding: 1em 0;
+    margin-top: 1em;
+    padding: 0.8em 0;
 }
 
 footer img {

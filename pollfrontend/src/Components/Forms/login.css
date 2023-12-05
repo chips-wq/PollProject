@@ -40,6 +40,12 @@ input {
 }
 
 
+.errors p {
+    margin: 0;
+    color: lightcoral;
+    font-size: 0.8em;
+}
+
 h1 {
     margin: 0;
 }

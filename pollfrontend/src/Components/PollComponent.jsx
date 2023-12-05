@@ -21,12 +21,12 @@ const PollComponent = ({ pollId, question, answers, ownerId, votes, setPolls }) 
         console.log("into submit");
         console.log(selectedVote);
         try {
-            const rawResponse = await fetch(`${apiBase}/polls/vote`, {
-                method: 'POST',
+            const rawResponse = await fetch(`${apiBase}/polls/vote/${pollId}`, {
+                method: 'PATCH',
                 credentials: "include",
                 headers: { "Access-Control-Allow-Credentials": "true", "Content-Type": "application/json" },
                 body: JSON.stringify(
-                    { pollId: pollId, voteIndex: selectedVote }
+                    { voteIndex: selectedVote }
                 )
             });
             const updatedPollJson = await rawResponse.json()

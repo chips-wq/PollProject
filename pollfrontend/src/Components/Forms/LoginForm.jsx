@@ -7,6 +7,7 @@ import UserContext from '../../context/context';
 
 const LoginForm = ({ closeModal }) => {
     const [user, setUser] = useContext(UserContext);
+    const [errors, setErrors] = useState([]);
 
     const [formData, setFormData] = useState({
         email: '',
@@ -37,7 +38,9 @@ const LoginForm = ({ closeModal }) => {
                 setUser(jsonResponse);
                 closeModal();
             } else {
-                //TODO: set errors
+                if (jsonResponse.errors !== undefined) {
+                    setErrors(jsonResponse.errors);
+                }
             }
         } catch (e) {
             console.error("Error sending login request");
@@ -56,6 +59,7 @@ const LoginForm = ({ closeModal }) => {
                         placeholder="Gmail"
                         value={formData.email}
                         onChange={handleInputChange}
+                        required
                     />
                 </div>
                 <div>
@@ -66,7 +70,11 @@ const LoginForm = ({ closeModal }) => {
                         placeholder="Password"
                         value={formData.password}
                         onChange={handleInputChange}
+                        required
                     />
+                </div>
+                <div className='errors'>
+                    {errors.map(error => <p>{error}</p>)}
                 </div>
                 <button type="submit" className='form-button'>Login</button>
             </form>
