@@ -45,7 +45,7 @@ router.delete("/polls", verifyJwtToken, async (req, res) => {
 
 router.patch("/polls/vote/:id", verifyJwtToken, async (req, res) => {
     const poll = await Poll.findById(req.params.id).exec();
-    //check if this user has voted
+    // check if this user has voted
     const voted = poll.votes.filter(vote => {
         return vote.voterId.valueOf() === req.userId
     }

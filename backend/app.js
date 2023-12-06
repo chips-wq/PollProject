@@ -1,6 +1,6 @@
 const express = require('express')
 require("./db/db.js") // initializa the database
-require('dotenv').config() //get environment variables
+require('dotenv').config() // get environment variables
 const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser');
 
@@ -17,7 +17,7 @@ const pollRouter = require("./polls.js");
 const errorCodes = require("./constants.js");
 const { verifyJwtToken } = require('./db/login/util.js');
 
-app.use(cors({ credentials: true, origin: "http://127.0.0.1:5173" }))
+app.use(cors({ credentials: true, origin: ["http://127.0.0.1:5173", "http://localhost:5173"] }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser());
@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 app.post("/login", async (req, res) => {
     const usr = await User.findOne({ email: req.body.email });
     if (usr !== null) {
-        //TODO: encrypt passwords and test hashes please
+        // TODO: encrypt passwords and test hashes please
         if (usr.password === req.body.password) {
             const token = jwt.sign({ _id: usr._id, }, process.env.SECRET_JWT)
             res.cookie('token', token, {
@@ -52,9 +52,13 @@ app.post("/login", async (req, res) => {
 })
 
 app.post("/register", async (req, res) => {
-    //TODO: do parsing of this
+    // TODO: do parsing of this
     const myUser = new User(req.body);
     console.log("hi")
+    if (req.body.password !== req.body.confirmPassword) {
+        res.status(errorCodes.AUTH_ERR).send({ errorCode: errorCodes.AUTH_ERR, errors: ['Parolele difera'] });
+        return;
+    }
     try {
         const usr = await myUser.save();
         const token = jwt.sign({ _id: usr._id, }, process.env.SECRET_JWT)
@@ -68,7 +72,7 @@ app.post("/register", async (req, res) => {
         });
         res.status(200).send(usr);
     } catch (e) {
-        if (e.code === 11000) { //mongodb 11000 is duplicate key error
+        if (e.code === 11000) { // mongodb 11000 is duplicate key error
             res.status(errorCodes.DUPLICATE_ERR).send({ errorCode: errorCodes.DUPLICATE_ERR, errors: ["Acest email a fost folosit deja!"] });
         }
         if (e.name === 'ValidationError') {

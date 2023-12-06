@@ -39,6 +39,7 @@
     padding-top: 5em;
     padding-left: 1em;
     padding-right: 1em;
+    margin-bottom: 110px;
 }
 
 .main-content-header img {
@@ -103,6 +104,9 @@ footer {
     background-color: var(--secondary-color);
     margin-top: 1em;
     padding: 0.8em 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
 }
 
 footer img {

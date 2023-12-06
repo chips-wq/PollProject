@@ -17,9 +17,6 @@ function App() {
     const getPolls = async () => {
         const rawResponse = await fetch(`${apiBase}/polls`, {
             method: 'GET',
-            // credentials: "include",
-            // headers: { "Access-Control-Allow-Credentials": "true", "Content-Type": "application/json" },
-            // body: JSON.stringify(formData)
         });
         const jsonResponse = await rawResponse.json();
         console.log(jsonResponse);

@@ -25,7 +25,6 @@ const RegisterForm = ({ closeModal }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Perform login logic here
         console.log('Form data', JSON.stringify(formData));
         try {
             const rawResponse = await fetch(`${apiBase}/register`, {
@@ -86,7 +85,7 @@ const RegisterForm = ({ closeModal }) => {
                     />
                 </div>
                 <div className='errors'>
-                    {errors.map(error => <p>{error}</p>)}
+                    {errors.map((error, id) => <p key={id}>{error}</p>)}
                 </div>
                 <button type="submit" className='form-button'>Register</button>
             </form>
